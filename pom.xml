@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.twuni</groupId>
+	<artifactId>common-crypto-rsa</artifactId>
+	<version>0.1.2-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>RSA Cryptography</name>
+	<description>This library supports RSA cryptographic functions such as encrypting, decrypting, and signing messages.</description>
+
+	<scm>
+		<developerConnection>scm:git:ssh:git@github.com:twuni/common-crypto-rsa.git</developerConnection>
+		<connection>scm:git:ssh:git@github.com:twuni/common-crypto-rsa.git</connection>
+		<url>scm:git:https://twuni@github.com/twuni/common-crypto-rsa.git</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>twuni</id>
+			<name>Leo Accend</name>
+			<organization>Twuni</organization>
+			<organizationUrl>https://twuni.org/</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<build>
+
+		<pluginManagement>
+
+			<plugins>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<encoding>UTF-8</encoding>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+
+			</plugins>
+
+		</pluginManagement>
+
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.8.5</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.twuni</groupId>
+			<artifactId>common-crypto</artifactId>
+			<version>0.1.2-SNAPSHOT</version>
+		</dependency>
+
+	</dependencies>
+
+</project>
