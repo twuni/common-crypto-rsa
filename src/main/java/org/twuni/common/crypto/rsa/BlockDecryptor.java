@@ -15,7 +15,7 @@ class BlockDecryptor extends BlockTransformer {
 
 	@Override
 	public int getOutputBlockSize() {
-		return getInputBlockSize();
+		return getInputBlockSize() - 1;
 	}
 
 	@Override

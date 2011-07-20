@@ -15,12 +15,12 @@ abstract class BlockTransformer extends org.twuni.common.crypto.BlockTransformer
 	protected BigInteger read( byte [] buffer, int offset, int length ) {
 
 		if( length > getInputBlockSize() ) {
-			throw new InputLengthException( String.format( "Length %s cannot be greater than or equal to block size %s.", Integer.valueOf( length ), Integer.valueOf( getInputBlockSize() ) ) );
+			throw new InputLengthException( String.format( "Length %s cannot be greater than the block size %s.", Integer.valueOf( length ), Integer.valueOf( getInputBlockSize() ) ) );
 		}
 
 		byte [] block = buffer;
 
-		if( !( offset == 0 && length == buffer.length ) ) {
+		if( offset != 0 || length != buffer.length ) {
 			block = new byte [length];
 			System.arraycopy( buffer, offset, block, 0, length );
 		}

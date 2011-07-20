@@ -6,6 +6,9 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Random;
 
+/**
+ * Generates RSA private keys.
+ */
 public class KeyGenerator {
 
 	private final Random random;

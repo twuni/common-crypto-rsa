@@ -5,6 +5,7 @@ import java.util.Random;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.twuni.common.crypto.Base64;
 import org.twuni.common.crypto.InputLengthException;
 
 public class BlockTransformerTest {
@@ -33,43 +34,87 @@ public class BlockTransformerTest {
 		assertRoundTrip( keygen.generate( BLOCK_SIZE + 8 ) );
 	}
 
+	@Test
+	public void testSingleBlockRoundTripWithBytesSucceedsWhenInputLengthMatchesBlockSize() {
+		assertRoundTripBytes( keygen.generate( BLOCK_SIZE ) );
+	}
+
+	@Test( expected = InputLengthException.class )
+	public void testSingleBlockEncryptionWithBytesFailsWhenInputLengthIsMoreThanBlockSize() {
+		assertRoundTripBytes( keygen.generate( BLOCK_SIZE - 8 ) );
+	}
+
+	@Test
+	public void testSingleBlockRoundTripWithBytesSucceedsWhenInputLengthIsLessThanBlockSize() {
+		assertRoundTripBytes( keygen.generate( BLOCK_SIZE + 8 ) );
+	}
+
 	private void assertRoundTrip( PrivateKey privateKey ) {
 		assertRoundTripFromPrivateKey( privateKey );
 		assertRoundTripFromPublicKey( privateKey );
 	}
 
+	private void assertRoundTripBytes( PrivateKey privateKey ) {
+		assertRoundTripBytesFromPrivateKey( privateKey );
+		assertRoundTripBytesFromPublicKey( privateKey );
+	}
+
 	private void assertRoundTripFromPrivateKey( PrivateKey privateKey ) {
+		byte [] expected = generateRandomString( BLOCK_SIZE / 8 - 1 ).getBytes();
+		assertRoundTripFromPrivateKey( privateKey, expected );
+	}
 
-		PublicKey publicKey = privateKey.getPublicKey();
-
-		BlockEncryptor encryptor = new BlockEncryptor( publicKey.getModulus() );
-		BlockDecryptor decryptor = new BlockDecryptor( publicKey.getModulus() );
-
-		byte [] expected = generateRandomString( BLOCK_SIZE / 8 ).getBytes();
-		byte [] encrypted = encryptor.transform( privateKey, expected );
-		byte [] actual = decryptor.transform( publicKey, encrypted );
-
-		Assert.assertArrayEquals( expected, actual );
-
+	private void assertRoundTripBytesFromPrivateKey( PrivateKey privateKey ) {
+		byte [] expected = generateRandomBytes( BLOCK_SIZE / 8 - 1 );
+		assertRoundTripFromPrivateKey( privateKey, expected );
 	}
 
 	private void assertRoundTripFromPublicKey( PrivateKey privateKey ) {
+		byte [] expected = generateRandomString( BLOCK_SIZE / 8 - 1 ).getBytes();
+		assertRoundTripFromPublicKey( privateKey, expected );
+	}
 
-		PublicKey publicKey = privateKey.getPublicKey();
+	private void assertRoundTripBytesFromPublicKey( PrivateKey privateKey ) {
+		byte [] expected = generateRandomBytes( BLOCK_SIZE / 8 - 1 );
+		assertRoundTripFromPublicKey( privateKey, expected );
+	}
 
-		BlockEncryptor encryptor = new BlockEncryptor( publicKey.getModulus() );
-		BlockDecryptor decryptor = new BlockDecryptor( publicKey.getModulus() );
-
-		byte [] expected = generateRandomString( BLOCK_SIZE / 8 ).getBytes();
-		byte [] encrypted = encryptor.transform( publicKey, expected );
-		byte [] actual = decryptor.transform( privateKey, encrypted );
-
+	private void assertRoundTripFromPrivateKey( PrivateKey privateKey, byte [] expected ) {
+		byte [] actual = roundTrip( privateKey, privateKey.getPublicKey(), expected );
 		Assert.assertArrayEquals( expected, actual );
+	}
+
+	private void assertRoundTripFromPublicKey( PrivateKey privateKey, byte [] expected ) {
+		byte [] actual = roundTrip( privateKey.getPublicKey(), privateKey, expected );
+		Assert.assertArrayEquals( expected, actual );
+	}
+
+	private byte [] roundTrip( PublicKey from, PrivateKey to, byte [] message ) {
+
+		BlockEncryptor encryptor = new BlockEncryptor( from.getModulus() );
+		BlockDecryptor decryptor = new BlockDecryptor( from.getModulus() );
+
+		byte [] encrypted = encryptor.transform( from, message );
+		byte [] actual = decryptor.transform( to, encrypted );
+
+		return actual;
+
+	}
+
+	private byte [] roundTrip( PrivateKey from, PublicKey to, byte [] message ) {
+
+		BlockEncryptor encryptor = new BlockEncryptor( to.getModulus() );
+		BlockDecryptor decryptor = new BlockDecryptor( to.getModulus() );
+
+		byte [] encrypted = encryptor.transform( from, message );
+		byte [] actual = decryptor.transform( to, encrypted );
+
+		return actual;
 
 	}
 
 	private String generateRandomString( int length ) {
-		return "This is the most amazing wave of sickening chaos on the planet, except for the trillion bees and insects just fluttering quietly about.".substring( 0, length );
+		return Base64.encode( generateRandomBytes( length * 2 ) ).substring( 0, length );
 	}
 
 	private byte [] generateRandomBytes( int length ) {

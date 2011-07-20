@@ -10,7 +10,7 @@ class BlockEncryptor extends BlockTransformer {
 
 	@Override
 	public int getInputBlockSize() {
-		return getOutputBlockSize();
+		return getOutputBlockSize() - 1;
 	}
 
 	@Override
@@ -24,7 +24,7 @@ class BlockEncryptor extends BlockTransformer {
 		byte [] output = result.toByteArray();
 
 		if( output[0] == 0 && output.length > getOutputBlockSize() ) {
-			byte [] buffer = new byte [output.length - 1];
+			byte [] buffer = new byte [getOutputBlockSize()];
 			System.arraycopy( output, 1, buffer, 0, buffer.length );
 			return buffer;
 		}
