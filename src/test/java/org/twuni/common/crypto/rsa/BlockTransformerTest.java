@@ -5,8 +5,9 @@ import java.util.Random;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.twuni.common.crypto.Base64;
 import org.twuni.common.crypto.InputLengthException;
+import org.twuni.common.util.Base64;
+import org.twuni.common.util.ByteArrayUtils;
 
 public class BlockTransformerTest {
 
@@ -81,12 +82,16 @@ public class BlockTransformerTest {
 
 	private void assertRoundTripFromPrivateKey( PrivateKey privateKey, byte [] expected ) {
 		byte [] actual = roundTrip( privateKey, privateKey.getPublicKey(), expected );
-		Assert.assertArrayEquals( expected, actual );
+		assertArrayEquals( expected, actual );
 	}
 
 	private void assertRoundTripFromPublicKey( PrivateKey privateKey, byte [] expected ) {
 		byte [] actual = roundTrip( privateKey.getPublicKey(), privateKey, expected );
-		Assert.assertArrayEquals( expected, actual );
+		assertArrayEquals( expected, actual );
+	}
+
+	protected void assertArrayEquals( byte [] expected, byte [] actual ) {
+		Assert.assertArrayEquals( expected, ByteArrayUtils.trim( actual ) );
 	}
 
 	private byte [] roundTrip( PublicKey from, PrivateKey to, byte [] message ) {

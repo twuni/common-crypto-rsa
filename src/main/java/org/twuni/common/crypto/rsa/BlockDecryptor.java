@@ -1,5 +1,7 @@
 package org.twuni.common.crypto.rsa;
 
+import static org.twuni.common.util.ByteArrayUtils.trim;
+
 import java.math.BigInteger;
 
 class BlockDecryptor extends BlockTransformer {
@@ -20,24 +22,7 @@ class BlockDecryptor extends BlockTransformer {
 
 	@Override
 	protected byte [] write( BigInteger input ) {
-
-		byte [] output = input.toByteArray();
-		int blockSize = getOutputBlockSize();
-
-		if( output.length > blockSize ) {
-			byte [] buffer = new byte [blockSize];
-			System.arraycopy( output, output.length - blockSize, buffer, 0, buffer.length );
-			return buffer;
-		}
-
-		if( output[0] == 0 ) {
-			byte [] buffer = new byte [output.length - 1];
-			System.arraycopy( output, 1, buffer, 0, buffer.length );
-			return buffer;
-		}
-
-		return output;
-
+		return trim( input.toByteArray() );
 	}
 
 }

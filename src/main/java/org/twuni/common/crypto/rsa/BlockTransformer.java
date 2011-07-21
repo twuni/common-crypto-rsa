@@ -12,26 +12,16 @@ abstract class BlockTransformer extends org.twuni.common.crypto.BlockTransformer
 		this.modulus = modulus;
 	}
 
-	protected BigInteger read( byte [] buffer, int offset, int length ) {
+	@Override
+	protected BigInteger read( byte [] input ) {
 
-		if( length > getInputBlockSize() ) {
-			throw new InputLengthException( String.format( "Length %s cannot be greater than the block size %s.", Integer.valueOf( length ), Integer.valueOf( getInputBlockSize() ) ) );
+		int blockSize = getInputBlockSize();
+
+		if( input.length > blockSize ) {
+			throw new InputLengthException( String.format( "Input length %s cannot be greater than block size %s.", Integer.valueOf( input.length ), Integer.valueOf( blockSize ) ) );
 		}
 
-		byte [] block = buffer;
-
-		if( offset != 0 || length != buffer.length ) {
-			block = new byte [length];
-			System.arraycopy( buffer, offset, block, 0, length );
-		}
-
-		BigInteger result = new BigInteger( 1, block );
-
-		if( result.compareTo( modulus ) >= 0 ) {
-			throw new InputLengthException( String.format( "Result %s cannot be greater than or equal to modulus %s.", result, modulus ) );
-		}
-
-		return result;
+		return new BigInteger( 1, input );
 
 	}
 

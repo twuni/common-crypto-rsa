@@ -3,8 +3,8 @@ package org.twuni.common.crypto.rsa;
 import java.io.IOException;
 import java.math.BigInteger;
 
-import org.twuni.common.crypto.Base64;
 import org.twuni.common.crypto.ByteArrayTransformer;
+import org.twuni.common.util.Base64;
 
 public class Transformer extends ByteArrayTransformer<BigInteger, BigInteger> {
 

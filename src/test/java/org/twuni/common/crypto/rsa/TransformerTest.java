@@ -6,7 +6,7 @@ import java.util.Random;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.twuni.common.crypto.Base64;
+import org.twuni.common.util.Base64;
 
 public class TransformerTest {
 

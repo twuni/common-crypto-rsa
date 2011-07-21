@@ -2,8 +2,8 @@ package org.twuni.common.crypto.rsa;
 
 import java.math.BigInteger;
 
-import org.twuni.common.crypto.Base64;
 import org.twuni.common.crypto.Transformer;
+import org.twuni.common.util.Base64;
 
 public class PublicKey implements Transformer<BigInteger, BigInteger> {
 

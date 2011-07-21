@@ -4,8 +4,8 @@ import static java.math.BigInteger.ONE;
 
 import java.math.BigInteger;
 
-import org.twuni.common.crypto.Base64;
 import org.twuni.common.crypto.Transformer;
+import org.twuni.common.util.Base64;
 
 public class PrivateKey implements Transformer<BigInteger, BigInteger> {
 
