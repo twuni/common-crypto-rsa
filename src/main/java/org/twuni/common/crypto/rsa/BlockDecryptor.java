@@ -19,9 +19,16 @@ class BlockDecryptor extends BlockTransformer {
 	}
 
 	@Override
-	protected byte [] write( BigInteger result ) {
+	protected byte [] write( BigInteger input ) {
 
-		byte [] output = result.toByteArray();
+		byte [] output = input.toByteArray();
+		int blockSize = getOutputBlockSize();
+
+		if( output.length > blockSize ) {
+			byte [] buffer = new byte [blockSize];
+			System.arraycopy( output, output.length - blockSize, buffer, 0, buffer.length );
+			return buffer;
+		}
 
 		if( output[0] == 0 ) {
 			byte [] buffer = new byte [output.length - 1];

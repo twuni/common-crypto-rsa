@@ -32,7 +32,7 @@ public class TransformerTest {
 	}
 
 	@Test
-	public void testMultipleBlockRoundTripTwoLayersString() throws IOException {
+	public void testMultipleBlockRoundTripStringTwoLayers() throws IOException {
 
 		String expected = generateRandomString( 4096 );
 		String actual = decrypt( decrypt( encrypt( encrypt( expected ) ) ) );
@@ -52,7 +52,7 @@ public class TransformerTest {
 	}
 
 	@Test
-	public void testMultipleBlockRoundTripTwoLayersBytes() throws IOException {
+	public void testMultipleBlockRoundTripBytesTwoLayers() throws IOException {
 
 		byte [] expected = generateRandomBytes( 4096 );
 		byte [] actual = decrypt( decrypt( encrypt( encrypt( expected ) ) ) );

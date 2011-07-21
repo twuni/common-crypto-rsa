@@ -19,18 +19,19 @@ class BlockEncryptor extends BlockTransformer {
 	}
 
 	@Override
-	protected byte [] write( BigInteger result ) {
+	protected byte [] write( BigInteger input ) {
 
-		byte [] output = result.toByteArray();
+		byte [] output = input.toByteArray();
+		int blockSize = getOutputBlockSize();
 
-		if( output[0] == 0 && output.length > getOutputBlockSize() ) {
-			byte [] buffer = new byte [getOutputBlockSize()];
-			System.arraycopy( output, 1, buffer, 0, buffer.length );
+		if( output.length > blockSize ) {
+			byte [] buffer = new byte [blockSize];
+			System.arraycopy( output, output.length - blockSize, buffer, 0, buffer.length );
 			return buffer;
 		}
 
-		if( output.length < getOutputBlockSize() ) {
-			byte [] buffer = new byte [getOutputBlockSize()];
+		if( output.length < blockSize ) {
+			byte [] buffer = new byte [blockSize];
 			System.arraycopy( output, 0, buffer, buffer.length - output.length, output.length );
 			return buffer;
 		}
