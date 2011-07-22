@@ -7,11 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.twuni.common.crypto.InputLengthException;
 import org.twuni.common.util.Base64;
-import org.twuni.common.util.ByteArrayUtils;
 
 public class BlockTransformerTest {
 
-	private static final int BLOCK_SIZE = 128;
+	private static final int BLOCK_SIZE = 512;
 
 	private KeyGenerator keygen;
 
@@ -61,22 +60,22 @@ public class BlockTransformerTest {
 	}
 
 	private void assertRoundTripFromPrivateKey( PrivateKey privateKey ) {
-		byte [] expected = generateRandomString( BLOCK_SIZE / 8 - 1 ).getBytes();
+		byte [] expected = generateRandomString( BLOCK_SIZE / 8 - 3 ).getBytes();
 		assertRoundTripFromPrivateKey( privateKey, expected );
 	}
 
 	private void assertRoundTripBytesFromPrivateKey( PrivateKey privateKey ) {
-		byte [] expected = generateRandomBytes( BLOCK_SIZE / 8 - 1 );
+		byte [] expected = generateRandomBytes( BLOCK_SIZE / 8 - 3 );
 		assertRoundTripFromPrivateKey( privateKey, expected );
 	}
 
 	private void assertRoundTripFromPublicKey( PrivateKey privateKey ) {
-		byte [] expected = generateRandomString( BLOCK_SIZE / 8 - 1 ).getBytes();
+		byte [] expected = generateRandomString( BLOCK_SIZE / 8 - 3 ).getBytes();
 		assertRoundTripFromPublicKey( privateKey, expected );
 	}
 
 	private void assertRoundTripBytesFromPublicKey( PrivateKey privateKey ) {
-		byte [] expected = generateRandomBytes( BLOCK_SIZE / 8 - 1 );
+		byte [] expected = generateRandomBytes( BLOCK_SIZE / 8 - 3 );
 		assertRoundTripFromPublicKey( privateKey, expected );
 	}
 
@@ -91,7 +90,7 @@ public class BlockTransformerTest {
 	}
 
 	protected void assertArrayEquals( byte [] expected, byte [] actual ) {
-		Assert.assertArrayEquals( expected, ByteArrayUtils.trim( actual ) );
+		Assert.assertArrayEquals( expected, actual );
 	}
 
 	private byte [] roundTrip( PublicKey from, PrivateKey to, byte [] message ) {
