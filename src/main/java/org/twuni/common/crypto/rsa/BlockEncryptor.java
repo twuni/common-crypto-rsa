@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.util.Random;
 
 import org.twuni.common.crypto.InputLengthException;
+import org.twuni.common.util.ByteArrayUtils;
 
 class BlockEncryptor extends BlockTransformer {
 
@@ -16,7 +17,7 @@ class BlockEncryptor extends BlockTransformer {
 	public BlockEncryptor( BigInteger modulus ) {
 		super( modulus );
 		random = new Random();
-		outputBlockSize = ( modulus.bitLength() + 7 ) / 8;
+		outputBlockSize = modulus.bitLength() / 8;
 		inputBlockSize = outputBlockSize - 3;
 	}
 
@@ -43,8 +44,11 @@ class BlockEncryptor extends BlockTransformer {
 
 	@Override
 	protected byte [] write( BigInteger input ) {
-		int blockSize = getOutputBlockSize();
-		return padLeft( input.toByteArray(), blockSize );
+		byte [] output = ByteArrayUtils.trim( input.toByteArray() );
+		if( output.length > outputBlockSize ) {
+			throw new InputLengthException( String.format( "Output length %s cannot be greater than block size %s.", Integer.valueOf( output.length ), Integer.valueOf( outputBlockSize ) ) );
+		}
+		return padLeft( output, outputBlockSize );
 	}
 
 	private byte [] pad( byte [] array, int length ) {

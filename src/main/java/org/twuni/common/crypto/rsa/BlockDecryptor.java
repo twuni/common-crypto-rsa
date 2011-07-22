@@ -11,7 +11,7 @@ class BlockDecryptor extends BlockTransformer {
 
 	public BlockDecryptor( BigInteger modulus ) {
 		super( modulus );
-		inputBlockSize = ( modulus.bitLength() + 7 ) / 8;
+		inputBlockSize = modulus.bitLength() / 8;
 		outputBlockSize = inputBlockSize - 3;
 	}
 
