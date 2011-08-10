@@ -44,7 +44,7 @@ public class TransformerTest {
 	@Test
 	public void testKeyThatHasBeenKnownToGenerateInvalidEncryptionBlocks() throws IOException {
 
-		PrivateKey privateKey = PrivateKey.deserialize( "AOJs7R7IdPtqsxp8v5VIP/UYG+I+zD5usvBzUPFHc5fV|ANiY+/6eTInKw5lge7hHrNdC7XFbmsATValP9XNRqa7X|AQAB" );
+		PrivateKey privateKey = PrivateKey.deserialize( "RSA|AOJs7R7IdPtqsxp8v5VIP/UYG+I+zD5usvBzUPFHc5fV|ANiY+/6eTInKw5lge7hHrNdC7XFbmsATValP9XNRqa7X|AQAB" );
 		PublicKey publicKey = privateKey.getPublicKey();
 		trusted = new Transformer( privateKey );
 		untrusted = new Transformer( publicKey );
