@@ -2,10 +2,11 @@ package org.twuni.common.crypto.rsa;
 
 import java.math.BigInteger;
 
-import org.twuni.common.crypto.Transformer;
 import org.twuni.common.util.Base64;
 
-public class PublicKey implements Transformer<BigInteger, BigInteger> {
+public class PublicKey implements org.twuni.common.crypto.PublicKey {
+
+	private static final String RSA = "RSA";
 
 	private final BigInteger modulus;
 	private final BigInteger exponent;
@@ -44,6 +45,7 @@ public class PublicKey implements Transformer<BigInteger, BigInteger> {
 
 		StringBuilder string = new StringBuilder();
 
+		string.append( RSA ).append( "|" );
 		string.append( Base64.encode( modulus.toByteArray() ) ).append( "|" );
 		string.append( Base64.encode( exponent.toByteArray() ) );
 
@@ -63,8 +65,12 @@ public class PublicKey implements Transformer<BigInteger, BigInteger> {
 
 		String [] args = serial.split( "\\|" );
 
-		BigInteger modulus = new BigInteger( Base64.decode( args[0] ) );
-		BigInteger exponent = new BigInteger( Base64.decode( args[1] ) );
+		if( !RSA.equals( args[0] ) || args.length != 3 ) {
+			throw new IllegalArgumentException( String.format( "%s is not a serialized RSA public key.", serial ) );
+		}
+
+		BigInteger modulus = new BigInteger( Base64.decode( args[1] ) );
+		BigInteger exponent = new BigInteger( Base64.decode( args[2] ) );
 
 		return new PublicKey( modulus, exponent );
 

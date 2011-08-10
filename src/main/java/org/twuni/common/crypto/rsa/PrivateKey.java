@@ -4,10 +4,11 @@ import static java.math.BigInteger.ONE;
 
 import java.math.BigInteger;
 
-import org.twuni.common.crypto.Transformer;
 import org.twuni.common.util.Base64;
 
-public class PrivateKey implements Transformer<BigInteger, BigInteger> {
+public class PrivateKey implements org.twuni.common.crypto.PrivateKey {
+
+	private static final String RSA = "RSA";
 
 	/**
 	 * An exponent commonly used in practice due to its being sufficiently large to avoid small
@@ -99,6 +100,7 @@ public class PrivateKey implements Transformer<BigInteger, BigInteger> {
 
 		StringBuilder string = new StringBuilder();
 
+		string.append( RSA ).append( "|" );
 		string.append( Base64.encode( p.toByteArray() ) ).append( "|" );
 		string.append( Base64.encode( q.toByteArray() ) ).append( "|" );
 		string.append( Base64.encode( publicKey.getExponent().toByteArray() ) );
@@ -119,9 +121,13 @@ public class PrivateKey implements Transformer<BigInteger, BigInteger> {
 
 		String [] args = serial.split( "\\|" );
 
-		BigInteger p = new BigInteger( Base64.decode( args[0] ) );
-		BigInteger q = new BigInteger( Base64.decode( args[1] ) );
-		BigInteger exponent = new BigInteger( Base64.decode( args[2] ) );
+		if( !RSA.equals( args[0] ) || args.length != 4 ) {
+			throw new IllegalArgumentException( String.format( "%s is not a serialized RSA private key.", serial ) );
+		}
+
+		BigInteger p = new BigInteger( Base64.decode( args[1] ) );
+		BigInteger q = new BigInteger( Base64.decode( args[2] ) );
+		BigInteger exponent = new BigInteger( Base64.decode( args[3] ) );
 
 		return new PrivateKey( p, q, exponent );
 
